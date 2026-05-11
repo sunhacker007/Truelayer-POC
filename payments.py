@@ -75,6 +75,8 @@ def create_payment(
         },
         data=body_bytes,
     )
+    if not resp.ok:
+        print(f"[payments] Error {resp.status_code}: {resp.text}")
     resp.raise_for_status()
     result = resp.json()
     print(f"[payments] Payment created: id={result.get('id')} status={result.get('status')}")
