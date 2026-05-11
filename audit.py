@@ -40,6 +40,9 @@ def audit_fields(transactions: list) -> dict:
         # running_balance is nested
         if field == "running_balance":
             non_null = sum(1 for t in transactions if t.get("running_balance", {}).get("amount") is not None)
+        elif field == "transaction_classification":
+            # Must be a non-empty list, not just present
+            non_null = sum(1 for t in transactions if t.get(field))
         else:
             non_null = sum(1 for t in transactions if t.get(field) is not None and t.get(field) != "")
 
