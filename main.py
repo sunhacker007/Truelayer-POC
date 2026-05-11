@@ -209,7 +209,11 @@ def main():
     print("\n" + "="*54)
     print("导出文件")
     print("="*54)
-    export.save_transactions_csv(txns, "transactions.csv")
+    from datetime import datetime
+    ts = datetime.now().strftime("%Y%m%d_%H%M")
+    csv_path = f"transactions_{ts}.csv"
+    md_path  = f"POC_Results_{ts}.md"
+    export.save_transactions_csv(txns, csv_path)
     export.save_poc_report_md(
         accounts=accounts,
         transactions=txns,
@@ -217,11 +221,11 @@ def main():
         l2_uk=l2_uk,
         l2_de=l2_de,
         l3=l3_results,
-        path="POC_Results.md",
+        path=md_path,
     )
-    print("\n交付物:")
-    print("  📄 transactions.csv — 1788笔交易原始数据")
-    print("  📋 POC_Results.md   — POC结果报告")
+    print(f"\n交付物:")
+    print(f"  📄 {csv_path}")
+    print(f"  📋 {md_path}")
 
 
 if __name__ == "__main__":
