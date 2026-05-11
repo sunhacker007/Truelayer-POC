@@ -36,7 +36,6 @@ def get_auth_url(scenario: str = "uk_standard") -> str:
         "scope": SCOPES,
         "redirect_uri": config.REDIRECT_URI,
         "providers": "uk-cs-mock",
-        "provider_id": "uk-cs-mock",
     }
     url = f"{config.AUTH_BASE_URL}/?{urllib.parse.urlencode(params)}"
     hint = SCENARIO_HINTS.get(scenario, "")
