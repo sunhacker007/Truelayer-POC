@@ -2,10 +2,10 @@ import json
 import uuid
 
 import requests
-import truelayer_signing
 
 import auth
 import config
+import signing
 
 
 def create_payment(
@@ -51,30 +51,28 @@ def create_payment(
     }
 
     if config.WEBHOOK_URI:
-        body["metadata"] = {}
         body["webhook_uri"] = config.WEBHOOK_URI
 
     body_bytes = json.dumps(body).encode()
+    sign_headers = {"Idempotency-Key": idempotency_key}
 
-    tl_signature = (
-        truelayer_signing.sign_with_pem(config.KID, config.PRIVATE_KEY)
-        .method("POST")
-        .path("/payments")
-        .header("Idempotency-Key", idempotency_key)
-        .body(body_bytes)
-        .sign()
+    tl_signature = signing.sign_request(
+        private_key_pem=config.PRIVATE_KEY,
+        kid=config.KID,
+        method="POST",
+        path="/payments",
+        headers=sign_headers,
+        body=body_bytes,
     )
-
-    headers = {
-        "Authorization": f"Bearer {access_token}",
-        "Idempotency-Key": idempotency_key,
-        "Tl-Signature": tl_signature,
-        "Content-Type": "application/json",
-    }
 
     resp = requests.post(
         f"{config.API_BASE_URL}/payments",
-        headers=headers,
+        headers={
+            "Authorization": f"Bearer {access_token}",
+            "Idempotency-Key": idempotency_key,
+            "Tl-Signature": tl_signature,
+            "Content-Type": "application/json",
+        },
         data=body_bytes,
     )
     resp.raise_for_status()
