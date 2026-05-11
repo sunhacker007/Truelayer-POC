@@ -60,13 +60,13 @@ def create_payment(
         private_key_pem=config.PRIVATE_KEY,
         kid=config.KID,
         method="POST",
-        path="/payments",
+        path="/v3/payments",
         headers=sign_headers,
         body=body_bytes,
     )
 
     resp = requests.post(
-        f"{config.API_BASE_URL}/payments",
+        f"{config.API_BASE_URL}/v3/payments",
         headers={
             "Authorization": f"Bearer {access_token}",
             "Idempotency-Key": idempotency_key,
@@ -88,7 +88,7 @@ def get_payment(payment_id: str) -> dict:
     access_token = auth.get_access_token(scope="payments")
 
     resp = requests.get(
-        f"{config.API_BASE_URL}/payments/{payment_id}",
+        f"{config.API_BASE_URL}/v3/payments/{payment_id}",
         headers={"Authorization": f"Bearer {access_token}"},
     )
     resp.raise_for_status()
