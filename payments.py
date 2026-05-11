@@ -35,9 +35,9 @@ def create_payment(
             },
             "beneficiary": {
                 "type": "external_account",
-                "name": beneficiary_name,
+                "account_holder_name": beneficiary_name,
                 "reference": "POC-Test",
-                "scheme_identifier": {
+                "account_identifier": {
                     "type": "sort_code_account_number",
                     "sort_code": beneficiary_sort_code,
                     "account_number": beneficiary_account_number,
