@@ -18,6 +18,7 @@ import auth
 import data
 import monitoring
 import audit
+import export
 
 BANNER = """
 ╔══════════════════════════════════════════════════════╗
@@ -204,11 +205,23 @@ def main():
     # ── 汇总 ────────────────────────────────────────────
     print_summary(l1_results, l2_uk, l2_de, l3_results)
 
-    print("交付物建议:")
-    print("  1. 截图本次输出作为连通性报告")
-    print("  2. 记录DE SCA错误码（C4部分）")
-    print("  3. D1字段完整率表格 + D2分类清单 + D3 RFMQTD矩阵")
-    print("  4. 向TrueLayer商务申请DE真实测试账户以验证DE银行实际行为")
+    # ── 导出 ────────────────────────────────────────────
+    print("\n" + "="*54)
+    print("导出文件")
+    print("="*54)
+    export.save_transactions_csv(txns, "transactions.csv")
+    export.save_poc_report_md(
+        accounts=accounts,
+        transactions=txns,
+        l1=l1_results,
+        l2_uk=l2_uk,
+        l2_de=l2_de,
+        l3=l3_results,
+        path="POC_Results.md",
+    )
+    print("\n交付物:")
+    print("  📄 transactions.csv — 1788笔交易原始数据")
+    print("  📋 POC_Results.md   — POC结果报告")
 
 
 if __name__ == "__main__":
