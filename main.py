@@ -19,6 +19,7 @@ import data
 import monitoring
 import audit
 import export
+import risk_proxy
 
 BANNER = """
 ╔══════════════════════════════════════════════════════╗
@@ -201,6 +202,13 @@ def main():
 
     # ── Layer 3 ─────────────────────────────────────────
     l3_results = run_layer3(txns)
+
+    # ── Risk Proxy ───────────────────────────────────────
+    print("\n" + "="*54)
+    print("RISK PROXY 指标（基于 transaction 数据自建）")
+    print("="*54)
+    balance_data = data.get_balance(access_token, account_id)
+    risk_results = risk_proxy.analyse_risk(txns, balance_data)
 
     # ── 汇总 ────────────────────────────────────────────
     print_summary(l1_results, l2_uk, l2_de, l3_results)

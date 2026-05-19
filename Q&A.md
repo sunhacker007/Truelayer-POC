@@ -96,6 +96,32 @@ BNPL 业务在还款日会批量拉取大量用户数据。
 
 ---
 
+---
+
+## 五、Risk Insights API（高优先级）
+
+**Q11: Financial Risk Insights 是否为独立付费产品？如何开通？**
+
+TrueLayer 文档中提及 Insights API，但相关页面需登录访问。
+- Risk Insights 是否需要单独签合同或开通额外权限？
+- 对应的 OAuth scope 名称是什么（如 `insights` / `risk_insights`）？
+- Sandbox 环境是否支持 Risk Insights 端点？
+
+---
+
+**Q12: Risk Insights API 返回哪些字段？**
+
+目前我们通过 `/transactions` 数据自建了以下代理指标：
+- 收入稳定性（月收入变异系数 CV）
+- 透支风险（负余额占比）
+- 赌博行为（classification + 关键词双策略）
+- 还款能力（月均净现金流）
+- 账户活跃度
+
+请确认官方 Risk Insights API 是否提供上述指标的标准化版本，以及是否有额外字段（如信用评分、欺诈风险分、收入来源分类等）？
+
+---
+
 ## 优先级汇总
 
 | 问题 | 优先级 | 影响 |
@@ -110,3 +136,5 @@ BNPL 业务在还款日会批量拉取大量用户数据。
 | Q8 速率限制 + 并发 | 🟡 中 | 生产容量规划 |
 | Q9 Production 接入条件 | 🟡 中 | 项目排期 |
 | Q10 数据使用授权 + GDPR | 🟢 低 | 合规备案 |
+| Q11 Risk Insights 开通方式 + scope | 🔴 高 | 风险决策能力 |
+| Q12 Risk Insights 字段清单 | 🔴 高 | 评分卡设计 |
